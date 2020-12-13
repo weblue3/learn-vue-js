@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{ num }}</p>
+        <app-header v-on:pass="logText"></app-header>
+        <app-footer v-on:increase="increaseNumber"></app-footer>
+        <child-component v-on:update="showAlert"></child-component>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const appHeader = {
+            template : '<button v-on:click="passEvent">Click me</button>',
+            methods : {
+                passEvent : function(){
+                    this.$emit('pass');
+                }
+            }
+        };
+
+        const appFooter = {
+            template : '<button v-on:click="addNumber">add</button>',
+            methods : {
+                addNumber : function(){
+                    this.$emit('increase');
+                }
+            }
+        };
+        
+        const childComponent = {
+            template : '<span v-on:click="sendEvent">누르세요</span>',
+            methods : {
+                sendEvent : function(){
+                    this.$emit('update');
+                }
+            }
+        };
+
+        new Vue({
+            el : '#app',
+            components : {
+                'app-header' : appHeader,
+                'app-footer' : appFooter,
+                'child-component' : childComponent
+            },
+            methods : {
+                logText : function(){
+                    console.log('hi');
+                },
+                increaseNumber : function(){
+                    this.num += 1;
+                },
+                showAlert : function(){
+                    alert('event received');
+                }
+            },
+            data : {
+                num : 10
+            }
+        });
+    </script>
+</body>
+</html>
